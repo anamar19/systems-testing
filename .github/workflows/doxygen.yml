@@ -1,0 +1,31 @@
+name: Generate Documentation with Doxygen
+
+on:
+  create:
+    tags:
+      - '*'
+
+jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🛠 Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install doxygen
+
+      - name: 📄 Generate Documentation with Doxygen
+        run: |
+          doxygen Doxyfile
+
+      - name: 📦 Save Documentation as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: ./html
